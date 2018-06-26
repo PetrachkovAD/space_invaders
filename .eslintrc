@@ -1,0 +1,13 @@
+{
+  "parser": "babel-eslint",
+  "extends": ["semistandard", "standard-jsx"],
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
+  "globals": {
+    "Image": Image,
+    "Audio": Audio,
+    "requestAnimationFrame": requestAnimationFrame
+  }
+}

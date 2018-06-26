@@ -1,0 +1,35 @@
+{
+  "name": "space_invaders",
+  "version": "1.0.0",
+  "description": "",
+  "main": "game.js",
+  "scripts": {
+    "lint": "eslint src/",
+    "lint:fix": "eslint --fix src/",
+    "grunt": "grunt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PetrachkovAD/space_invaders.git"
+  },
+  "author": "Petrachkov A.D.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PetrachkovAD/space_invaders/issues"
+  },
+  "homepage": "https://github.com/PetrachkovAD/space_invaders#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.5",
+    "babel-preset-env": "^1.7.0",
+    "babelify": "^8.0.0",
+    "eslint": "^5.0.0",
+    "grunt": "^1.0.3",
+    "grunt-babel": "^7.0.0",
+    "grunt-browserify": "^5.3.0",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "load-grunt-tasks": "^4.0.0",
+    "semistandard": "^12.0.1"
+  }
+}
