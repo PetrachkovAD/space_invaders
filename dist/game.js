@@ -37,9 +37,7 @@ var Bullet = function (_GameObject) {
   _createClass(Bullet, [{
     key: 'step',
     value: function step() {
-      this.clear();
       this.y += this.dy;
-      this.draw();
     }
   }, {
     key: 'isHit',
@@ -195,7 +193,6 @@ var Enemy = function (_GameObject) {
     value: function step(dx) {
       if (this.isAlive) {
         this.x += dx;
-        this.draw();
       }
     }
     // Спуск коробля в низ
@@ -206,7 +203,6 @@ var Enemy = function (_GameObject) {
     value: function stepToDown() {
       if (this.isAlive) {
         this.y += this.dy;
-        this.draw();
       }
     }
     // Корабль по команде стреляет с некой вероятностью
@@ -616,7 +612,7 @@ function startGameLoop(screen, input) {
       gun.y = screen.h - _config.HEIGHT_BAR - _config.HEIGHT_GUN - 4;
       bullets = [];
       screen.clearAll();
-      screen.drawBar();
+      screen.drawBar(gun);
       gun.draw();
     }
 
@@ -649,10 +645,9 @@ function startGameLoop(screen, input) {
         enemyFleet.step();
         enemyFleet.fire(bullets);
       }
+      screen.clearAll();
+      screen.drawAll(gun, bullets, enemyFleet, step);
     }
-
-    screen.drawScoreBar(gun.score);
-    screen.drawLifeBar(gun);
 
     step += 1;
     requestAnimationFrame(loop);
@@ -671,7 +666,6 @@ var input = new _inputHandler2.default();
 setTimeout(function wait() {
   if (input.isAnyKeyPressed()) {
     screen.clearAll();
-    screen.drawBar();
 
     var gameLoop = startGameLoop(screen, input);
     // запускаем игровой цикл
@@ -730,11 +724,15 @@ var GameObject = function () {
   }, {
     key: 'draw',
     value: function draw() {
+      var changeSprite = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
       var spr = this.spriters[this.curSprite];
 
       this.ctx.drawImage(spr.sp, spr.x, spr.y, spr.w, spr.h, this.x, this.y, this.w, this.h);
 
-      if (this.curSprite < this.spriters.length - 1) this.curSprite += 1;else this.curSprite = 0;
+      if (changeSprite) {
+        if (this.curSprite < this.spriters.length - 1) this.curSprite += 1;else this.curSprite = 0;
+      }
     }
   }]);
 
@@ -803,9 +801,7 @@ var Gun = function (_GameObject) {
     key: 'moving',
     value: function moving(dx) {
       if (this.isMoving && this.x + dx >= 0 && this.x + dx <= _config.WIDTH_CANVAS - _config.WIDTH_GUN) {
-        this.clear();
         this.x += dx;
-        this.draw();
       } else {
         this.stop();
       }
@@ -941,6 +937,18 @@ var Screen = function () {
       this.ctx.fill();
     }
   }, {
+    key: 'drawAll',
+    value: function drawAll(gun, bullets, enemyFleet, step) {
+      this.drawBar(gun);
+      gun.draw();
+      bullets.forEach(function (bullet) {
+        bullet.draw();
+      });
+      enemyFleet.ships.forEach(function (ship) {
+        ship.draw((step - 20) % enemyFleet.stepGap === 0);
+      });
+    }
+  }, {
     key: 'clear',
     value: function clear(x, y, w, h) {
       this.ctx.rect(x, y, w, h);
@@ -951,13 +959,18 @@ var Screen = function () {
 
   }, {
     key: 'drawBar',
-    value: function drawBar() {
+    value: function drawBar(gun) {
       this.ctx.beginPath();
       this.ctx.moveTo(0, this.h - _config.HEIGHT_BAR);
       this.ctx.lineTo(this.w, this.h - _config.HEIGHT_BAR);
       this.ctx.strokeStyle = 'green';
       this.ctx.stroke();
       this.ctx.closePath();
+
+      if (gun) {
+        this.drawLifeBar(gun);
+        this.drawScoreBar(gun.score);
+      }
     }
     // отрисовка жизней
 

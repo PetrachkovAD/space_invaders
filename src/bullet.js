@@ -8,9 +8,7 @@ class Bullet extends GameObject {
   }
 
   step () {
-    this.clear();
     this.y += this.dy;
-    this.draw();
   }
 
   isHit (targets, gun) {

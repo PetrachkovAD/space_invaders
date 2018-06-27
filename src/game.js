@@ -96,7 +96,7 @@ function startGameLoop (screen, input) {
       gun.y = screen.h - HEIGHT_BAR - HEIGHT_GUN - 4;
       bullets = [];
       screen.clearAll();
-      screen.drawBar();
+      screen.drawBar(gun);
       gun.draw();
     }
 
@@ -113,12 +113,10 @@ function startGameLoop (screen, input) {
         bullet.step();
         // Если пуля попала в цель, очищаем ее и больше не отслеживаем
         if (bullet.isHit(bullet.type === 'gun' ? enemyFleet.ships : [gun], gun)) {
-          bullet.clear();
           bullets.splice(i, 1);
         } else {
           // Удаляем улетевшие пули
           if (bullet.y > screen.h - HEIGHT_BAR - bullet.h - 2 || bullet.y < 0) {
-            bullet.clear();
             bullets.splice(i, 1);
           }
         }
@@ -129,10 +127,9 @@ function startGameLoop (screen, input) {
         enemyFleet.step();
         enemyFleet.fire(bullets);
       }
+      screen.clearAll();
+      screen.drawAll(gun, bullets, enemyFleet, step);
     }
-
-    screen.drawScoreBar(gun.score);
-    screen.drawLifeBar(gun);
 
     step += 1;
     requestAnimationFrame(loop);
@@ -151,7 +148,6 @@ let input = new InputHandler();
 setTimeout(function wait () {
   if (input.isAnyKeyPressed()) {
     screen.clearAll();
-    screen.drawBar();
 
     var gameLoop = startGameLoop(screen, input);
     // запускаем игровой цикл

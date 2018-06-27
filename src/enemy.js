@@ -14,7 +14,6 @@ class Enemy extends GameObject {
   step (dx) {
     if (this.isAlive) {
       this.x += dx;
-      this.draw();
     }
   }
   // Спуск коробля в низ
@@ -22,7 +21,6 @@ class Enemy extends GameObject {
   stepToDown () {
     if (this.isAlive) {
       this.y += this.dy;
-      this.draw();
     }
   }
   // Корабль по команде стреляет с некой вероятностью
@@ -39,7 +37,6 @@ class Enemy extends GameObject {
   }
   // Корабль уничтожен
   destroy () {
-    this.clear();
     this.isAlive = false;
   }
 }
@@ -159,7 +156,6 @@ class EnemyFleet extends GameObject {
       this.dx = -this.dx;
       this.stepToDown();
     } else {
-      this.clear();
       this.x += this.dx;
       this.lines.forEach(function (enemyLine, i) {
         enemyLine.step(self.dx);
@@ -173,7 +169,6 @@ class EnemyFleet extends GameObject {
   }
 
   stepToDown () {
-    this.clear();
     this.y += this.dy;
     this.lines.forEach(function (enemyLine, i) {
       enemyLine.stepToDown();

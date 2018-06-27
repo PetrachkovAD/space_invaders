@@ -12,19 +12,34 @@ class Screen {
     this.ctx.fillStyle = 'black';
     this.ctx.fill();
   }
+  drawAll (gun, bullets, enemyFleet, step) {
+    this.drawBar(gun);
+    gun.draw();
+    bullets.forEach(function (bullet) {
+      bullet.draw();
+    });
+    enemyFleet.ships.forEach(function (ship) {
+      ship.draw((step - 20) % enemyFleet.stepGap === 0);
+    });
+  }
   clear (x, y, w, h) {
     this.ctx.rect(x, y, w, h);
     this.ctx.fillStyle = 'black';
     this.ctx.fill();
   }
   // отрисовка бара
-  drawBar () {
+  drawBar (gun) {
     this.ctx.beginPath();
     this.ctx.moveTo(0, this.h - HEIGHT_BAR);
     this.ctx.lineTo(this.w, this.h - HEIGHT_BAR);
     this.ctx.strokeStyle = 'green';
     this.ctx.stroke();
     this.ctx.closePath();
+
+    if (gun) {
+      this.drawLifeBar(gun);
+      this.drawScoreBar(gun.score);
+    }
   }
   // отрисовка жизней
   drawLifeBar (gun) {

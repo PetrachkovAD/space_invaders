@@ -29,13 +29,15 @@ class GameObject {
     this.ctx.closePath();
   }
 
-  draw () {
+  draw (changeSprite = false) {
     var spr = this.spriters[this.curSprite];
 
     this.ctx.drawImage(spr.sp, spr.x, spr.y, spr.w, spr.h, this.x, this.y, this.w, this.h);
 
-    if (this.curSprite < this.spriters.length - 1) this.curSprite += 1;
-    else this.curSprite = 0;
+    if (changeSprite) {
+      if (this.curSprite < this.spriters.length - 1) this.curSprite += 1;
+      else this.curSprite = 0;
+    }
   }
 }
 

@@ -25,9 +25,7 @@ class Gun extends GameObject {
 
   moving (dx) {
     if (this.isMoving && (this.x + dx >= 0 && this.x + dx <= WIDTH_CANVAS - WIDTH_GUN)) {
-      this.clear();
       this.x += dx;
-      this.draw();
     } else {
       this.stop();
     }
